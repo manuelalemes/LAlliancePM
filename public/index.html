@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reservas – Restaurante</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🍽</span>
+        <span class="logo-text">L'Alliance<strong>P&M</strong></span>
+      </div>
+      <nav>
+        <button class="nav-btn active" onclick="mostrarAba('mapa')">Mapa</button>
+        <button class="nav-btn" onclick="mostrarAba('reservas')">Reservas</button>
+        <button class="nav-btn" onclick="mostrarAba('nova')">+ Nova Reserva</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== ABA: MAPA ===== -->
+    <section id="aba-mapa" class="aba ativa">
+      <div class="section-header">
+        <h2>Mapa das Mesas</h2>
+        <div class="legenda">
+          <span class="badge disponivel">Disponível</span>
+          <span class="badge reservado">Reservado</span>
+          <span class="badge ocupado">Ocupado</span>
+        </div>
+        <button class="btn-refresh" onclick="carregarMapa()">↻ Atualizar</button>
+      </div>
+
+      <div id="mapa-container" class="mapa-grid">
+        <p class="carregando">Carregando mesas...</p>
+      </div>
+    </section>
+
+    <!-- ===== ABA: RESERVAS ===== -->
+    <section id="aba-reservas" class="aba">
+      <div class="section-header">
+        <h2>Reservas</h2>
+        <button class="btn-refresh" onclick="carregarReservas()">↻ Atualizar</button>
+      </div>
+
+      <!-- Filtros -->
+      <div class="filtros">
+        <input type="text"   id="f-cliente" placeholder="Buscar por cliente"    oninput="carregarReservas()" />
+        <input type="number" id="f-mesa"    placeholder="Nº mesa"               oninput="carregarReservas()" />
+        <input type="date"   id="f-data"                                         oninput="carregarReservas()" />
+        <select id="f-status" onchange="carregarReservas()">
+          <option value="">Todos os status</option>
+          <option value="reservado">Reservado</option>
+          <option value="ocupado">Ocupado</option>
+          <option value="finalizado">Finalizado</option>
+          <option value="cancelado">Cancelado</option>
+        </select>
+      </div>
+
+      <div id="lista-reservas">
+        <p class="carregando">Carregando reservas...</p>
+      </div>
+    </section>
+
+    <!-- ===== ABA: NOVA RESERVA ===== -->
+    <section id="aba-nova" class="aba">
+      <div class="section-header">
+        <h2 id="form-titulo">Nova Reserva</h2>
+      </div>
+
+      <div class="form-card">
+        <input type="hidden" id="reserva-id" />
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nome do Cliente *</label>
+            <input type="text" id="nomeCliente" placeholder="Nome completo" />
+          </div>
+          <div class="form-group">
+            <label>Contato *</label>
+            <input type="text" id="contatoCliente" placeholder="(11) 99999-9999" />
+          </div>
+          <div class="form-group">
+            <label>Número da Mesa *</label>
+            <input type="number" id="numeroMesa" min="1" placeholder="Ex: 3" />
+          </div>
+          <div class="form-group">
+            <label>Quantidade de Pessoas *</label>
+            <input type="number" id="quantidadePessoas" min="1" placeholder="Ex: 4" />
+          </div>
+          <div class="form-group">
+            <label>Data e Hora *</label>
+            <input type="datetime-local" id="dataHoraReserva" />
+          </div>
+          <div class="form-group">
+            <label>Duração (minutos)</label>
+            <input type="number" id="duracaoMinutos" value="90" min="30" placeholder="90" />
+          </div>
+          <div class="form-group" id="campo-status" style="display:none">
+            <label>Status</label>
+            <select id="status">
+              <option value="reservado">Reservado</option>
+              <option value="ocupado">Ocupado</option>
+              <option value="finalizado">Finalizado</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Observações</label>
+            <textarea id="observacoes" rows="2" placeholder="Ex: Aniversário, alergias..."></textarea>
+          </div>
+        </div>
+
+        <div id="form-msg"></div>
+
+        <div class="form-actions">
+          <button class="btn-primary" onclick="salvarReserva()">Confirmar Reserva</button>
+          <button class="btn-secondary" onclick="limparFormulario()">Limpar</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal detalhes da mesa -->
+  <div id="modal" class="modal-overlay" onclick="fecharModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="fecharModal()">✕</button>
+      <div id="modal-conteudo"></div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
